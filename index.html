@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/icons/logo.png"> <!-- This sets the favicon in the browser -->
+    <link rel="apple-touch-icon" href="images/icons/logo.png">
+    <link rel="stylesheet" href="css/index.css">
+    <!-- Links to the Quicksand Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <!-- Link for the chart.js-->
+    <script src="node_modules/chart.js/dist/chart.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script> -->
+    <!-- Links for the leaflet interactive map -->
+    <link rel="stylesheet" 
+        href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" 
+    />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin="">
+    </script>
+    <title>Covid Tracker</title>
+</head>
+<body>
+    <div class="container">
+        <div class="left-container">
+            <header>
+                <div class="logo-container">
+                    <img src="images/icons/logo.png" alt="Covid Tracker logo" class="logo">
+                    <h1>Covid Tracker</h1>
+                </div>
+
+                <div class="selectors-container">
+                    <select id="covid-data-type-selector">
+                        <option value="Cases" class="covid-data-type" selected>Cases Data</option>
+                        <option value="Vaccines" class="covid-data-type">Vaccination Data</option>
+                    </select>
+                    
+                    <select id="location-selector"></select>
+                </div>
+            </header>
+
+            <section id="covid-data-container">
+                <div class="data-container" id="data-container-1">
+                    <h2 class="data-container-title"></h2>
+                    <div class="data-container-info-1">
+                        <p class="data-info-title"></p>
+                        <p class="data-info-data"></p>
+                    </div>
+                    <div class="data-container-info-2">
+                        <p class="data-info-title"></p>
+                        <p class="data-info-data"></p>
+                    </div>
+                    <div class="selection-indicator"></div>
+                </div>
+
+                <div class="data-container" id="data-container-2">
+                    <h2 class="data-container-title"></h2>
+                    <div class="data-container-info-1">
+                        <p class="data-info-title"></p>
+                        <p class="data-info-data"></p>
+                    </div>
+                    <div class="data-container-info-2">
+                        <p class="data-info-title"></p>
+                        <p class="data-info-data"></p>
+                    </div>
+                    <div class="selection-indicator"></div>
+                </div>
+
+                <div class="data-container" id="data-container-3">
+                    <h2 class="data-container-title"></h2>
+                    <div class="data-container-info-1">
+                        <p class="data-info-title"></p>
+                        <p class="data-info-data"></p>
+                    </div>
+                    <div class="data-container-info-2">
+                        <p class="data-info-title"></p>
+                        <p class="data-info-data"></p>
+                    </div>
+                    <div class="selection-indicator"></div>
+                </div>
+            </section>
+
+            <section class="map-container">
+                <div id="map">This is a map</div>
+            </section>
+        </div>
+        
+        <div class="right-container">
+            <div class="data-by-country-container">
+                <h2 id="table-title"></h2>
+                <div class="table-wrapper">
+                    <table id="table"></table>
+                </div>
+            </div>
+
+            <div class="historical-data-container">
+                <h2 id="chart-title"></h2>
+                <h3 id="chart-subtitle"></h3>
+                <canvas id="canvas" width="200" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
