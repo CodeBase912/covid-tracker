@@ -55,7 +55,7 @@ export function loadChart() {
     xhr.onload = function() {
         if (this.status == 200) {
             data = JSON.parse(this.responseText);
-            
+            console.log(data);
             let tempData = [];
             for (let i in data) {
                 let lastDayData;
@@ -63,8 +63,13 @@ export function loadChart() {
                 let indexedData = [];
                 for (let j in data[i]) {
                     if (lastDayData) {
-                        indexedData.push({x: j, y: data[i][j] - lastDayData});
-                        lastDayData = data[i][j];
+                        if (data[i][j] == 0) {
+                            indexedData.push({x: j, y: Math.abs(data[i][j])});
+                        }
+                        else {
+                            indexedData.push({x: j, y: Math.abs(lastDayData - data[i][j])});
+                            lastDayData = data[i][j];
+                        }
                     }
                     else {
                         lastDayData = data[i][j];
@@ -75,6 +80,7 @@ export function loadChart() {
 
             // Set the countryTimeSeriesData variable for export into the main app.ja module
             countryTimeSeriesData = {cases: tempData[0], deaths: tempData[1], recovered: tempData[2]};
+            console.log(tempData);
 
             const ctx = document.querySelector('#canvas').getContext('2d');
             myChart = new Chart(ctx, {
@@ -323,8 +329,13 @@ export function updateChart(chart, countryCodeData, vaccinatingCountries) {
                         let indexedData = [];
                         for (let j in data[i]) {
                             if (lastDayData) {
-                                indexedData.push({x: j, y: data[i][j] - lastDayData});
-                                lastDayData = data[i][j];
+                                if (data[i][j] == 0) {
+                                    indexedData.push({x: j, y: Math.abs(data[i][j])});
+                                }
+                                else {
+                                    indexedData.push({x: j, y: Math.abs(lastDayData - data[i][j])});
+                                    lastDayData = data[i][j];
+                                }
                             }
                             else {
                                 lastDayData = data[i][j];
@@ -376,8 +387,13 @@ export function updateChart(chart, countryCodeData, vaccinatingCountries) {
                         let indexedData = [];
                         for (let j in data.timeline[i]) {
                             if (lastDayData) {
-                                indexedData.push({x: j, y: data.timeline[i][j] - lastDayData});
-                                lastDayData = data.timeline[i][j];
+                                if (data.timeline[i][j] == 0) {
+                                    indexedData.push({x: j, y: Math.abs(data.timeline[i][j])});
+                                }
+                                else {
+                                    indexedData.push({x: j, y: Math.abs(lastDayData - data.timeline[i][j])});
+                                    lastDayData = data.timeline[i][j];
+                                }
                             }
                             else {
                                 lastDayData = data.timeline[i][j];
