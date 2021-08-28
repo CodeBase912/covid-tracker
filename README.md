@@ -6,4 +6,4 @@ A personal project I built with vanilla javascript. This is a single page web ap
 
 ## Screenshot
 
-![screenshot](./public/images/screenshot.png?raw=true 'Title')
+![screenshot](./public/images/screenshot.png?raw=true 'Screenshot of Covid Tracker')
