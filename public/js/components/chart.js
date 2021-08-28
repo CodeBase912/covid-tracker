@@ -55,7 +55,6 @@ export function loadChart() {
     xhr.onload = function() {
         if (this.status == 200) {
             data = JSON.parse(this.responseText);
-            console.log(data);
             let tempData = [];
             for (let i in data) {
                 let lastDayData;
