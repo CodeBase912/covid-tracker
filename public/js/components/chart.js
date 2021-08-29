@@ -84,7 +84,6 @@ export function loadChart() {
         deaths: tempData[1],
         recovered: tempData[2],
       };
-      console.log(tempData);
 
       const ctx = document.querySelector('#canvas').getContext('2d');
       myChart = new Chart(ctx, {
