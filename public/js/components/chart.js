@@ -1,4 +1,4 @@
-import { formatNumber } from "../Util.js";
+import { formatNumber } from '../Util.js';
 
 /**
  * Due to the data schema of this application, we need to export some variables that need to have global scope as they
@@ -29,8 +29,7 @@ export let countryTimeSeriesData;
 // Load chart function
 
 export function loadChart() {
-
-    /**About
+  /**About
 
      * @function updateChart
 
@@ -40,110 +39,113 @@ export function loadChart() {
 
     */
 
-    const chartTitle = document.querySelector("#chart-title");
-    const chartSubTitle = document.querySelector("#chart-subtitle");
+  const chartTitle = document.querySelector('#chart-title');
+  const chartSubTitle = document.querySelector('#chart-subtitle');
 
-    chartTitle.innerHTML = "Worldwide";
-    chartSubTitle.innerHTML = "New Cases <span>(last 120 days)</span>";
+  chartTitle.innerHTML = 'Worldwide';
+  chartSubTitle.innerHTML = 'New Cases <span>(last 120 days)</span>';
 
-    // Make an API call for the global COVID-19 cases timeseries data for the past 120 days
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://disease.sh/v3/covid-19/historical/all?lastdays=120", true);
-    let data;
-    let newData = [];
-    let labels = [];
-    xhr.onload = function() {
-        if (this.status == 200) {
-            data = JSON.parse(this.responseText);
-            let tempData = [];
-            for (let i in data) {
-                let lastDayData;
-                let index;
-                let indexedData = [];
-                for (let j in data[i]) {
-                    if (lastDayData) {
-                        if (data[i][j] == 0) {
-                            indexedData.push({x: j, y: Math.abs(data[i][j])});
-                        }
-                        else {
-                            indexedData.push({x: j, y: Math.abs(lastDayData - data[i][j])});
-                            lastDayData = data[i][j];
-                        }
-                    }
-                    else {
-                        lastDayData = data[i][j];
-                    }
-                }
-                tempData.push(indexedData);
+  // Make an API call for the global COVID-19 cases timeseries data for the past 120 days
+  const xhr = new XMLHttpRequest();
+  xhr.open(
+    'GET',
+    'https://disease.sh/v3/covid-19/historical/all?lastdays=120',
+    true
+  );
+  let data;
+  let newData = [];
+  let labels = [];
+  xhr.onload = function () {
+    if (this.status == 200) {
+      data = JSON.parse(this.responseText);
+      let tempData = [];
+      for (let i in data) {
+        let lastDayData;
+        let index;
+        let indexedData = [];
+        for (let j in data[i]) {
+          if (lastDayData) {
+            if (data[i][j] == 0) {
+              indexedData.push({ x: j, y: Math.abs(data[i][j]) });
+            } else {
+              indexedData.push({ x: j, y: Math.abs(lastDayData - data[i][j]) });
+              lastDayData = data[i][j];
             }
-
-            // Set the countryTimeSeriesData variable for export into the main app.ja module
-            countryTimeSeriesData = {cases: tempData[0], deaths: tempData[1], recovered: tempData[2]};
-            console.log(tempData);
-
-            const ctx = document.querySelector('#canvas').getContext('2d');
-            myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: 'Cases',
-                        data: countryTimeSeriesData.cases,
-                        backgroundColor: 'rgba(255, 166, 0, 0.568)',
-                        borderColor: 'rgb(224, 146, 0)',
-                        borderWidth: 2,
-                        fill: true,
-                        pointRadius: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    title: {
-                      display: false,
-                      text:'Chart.js Line Chart'
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                        }
-                    },
-                    hover: {
-                        mode: 'index',
-                        intersect: false,
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                display: '',
-                            }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                display: '',
-                            }
-                        }
-                    }
-                }
-            });
-
+          } else {
+            lastDayData = data[i][j];
+          }
         }
+        tempData.push(indexedData);
+      }
+
+      // Set the countryTimeSeriesData variable for export into the main app.ja module
+      countryTimeSeriesData = {
+        cases: tempData[0],
+        deaths: tempData[1],
+        recovered: tempData[2],
+      };
+      console.log(tempData);
+
+      const ctx = document.querySelector('#canvas').getContext('2d');
+      myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          datasets: [
+            {
+              label: 'Cases',
+              data: countryTimeSeriesData.cases,
+              backgroundColor: 'rgba(255, 166, 0, 0.568)',
+              borderColor: 'rgb(224, 146, 0)',
+              borderWidth: 2,
+              fill: true,
+              pointRadius: 0,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          title: {
+            display: false,
+            text: 'Chart.js Line Chart',
+          },
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false,
+            },
+          },
+          hover: {
+            mode: 'index',
+            intersect: false,
+          },
+          scales: {
+            x: {
+              grid: {
+                display: '',
+              },
+            },
+            y: {
+              beginAtZero: true,
+              grid: {
+                display: '',
+              },
+            },
+          },
+        },
+      });
     }
+  };
 
-    xhr.send();
+  xhr.send();
 }
-
-
-
 
 // Update chart function
 
 export function updateChart(chart, countryCodeData, vaccinatingCountries) {
-
-    /**About
+  /**About
 
      * @function updateChart
 
@@ -166,93 +168,108 @@ export function updateChart(chart, countryCodeData, vaccinatingCountries) {
 
     */
 
+  const covidDataType = document.querySelector(
+    '#covid-data-type-selector'
+  ).value;
+  const location = document.querySelector('#location-selector').value;
 
-    const covidDataType = document.querySelector("#covid-data-type-selector").value;
-    const location = document.querySelector("#location-selector").value;
+  if (covidDataType == 'Vaccines') {
+    // Get and display vaccines data
+    if (location == 'worldwide') {
+      // Get and display worldwide vaccines data
+      const xhr = new XMLHttpRequest();
+      xhr.open(
+        'GET',
+        'https://disease.sh/v3/covid-19/vaccine/coverage?lastdays=120&fullData=false',
+        true
+      );
 
-    if (covidDataType == "Vaccines") {
-        // Get and display vaccines data
-        if (location == "worldwide") {
-            // Get and display worldwide vaccines data
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", "https://disease.sh/v3/covid-19/vaccine/coverage?lastdays=120&fullData=false", true);
-
-            let newVaccinationData = [];
-            xhr.onload = function() {
-                if (this.status == 200) {
-                    const data = JSON.parse(this.responseText);
-                    let lastDayData;
-                    let index = 0;
-                    let sumOfTotalVaccinations = 0;
-                    for (let i in data) {
-                        if (lastDayData) {
-                            if (index == 119 && lastDayData == data[i]) {
-                                // Do nothing
-                            }
-                            else {    
-                                newVaccinationData.push({x: i, y: data[i] - lastDayData});
-                                sumOfTotalVaccinations += (data[i] - lastDayData);
-                                lastDayData = data[i];
-                            }
-                        }
-                        else {
-                            lastDayData = data[i]
-                        }
-                        index++;
-                    }
-
-                    const averageVaccinationsPerDay = Math.round(sumOfTotalVaccinations / (index - 1));
-
-                    // Update the child element of the #data-container-2 {DOM-element}
-                    const casesDataContainer = document.querySelector("#data-container-2");
-                    casesDataContainer.querySelector(".data-container-info-1").querySelector(".data-info-data").innerHTML = formatNumber(averageVaccinationsPerDay);
-                    
-                    // Update the chart
-                    const chartTitle = document.querySelector("#chart-title");
-                    const chartSubTitle = document.querySelector("#chart-subtitle");
-
-                    chartTitle.innerHTML = "Worldwide";
-                    chartSubTitle.innerHTML = "New Vaccinations <span>(last 120 days)</span>";
-
-                    chart.data.datasets[0].data = newVaccinationData;
-                    chart.data.datasets[0].backgroundColor = "rgba(0, 0, 255, 0.568)";
-                    chart.data.datasets[0].borderColor = "blue";
-                    chart.data.datasets[0].label = "Vaccinations";
-                    
-                    chart.update();
-                }
+      let newVaccinationData = [];
+      xhr.onload = function () {
+        if (this.status == 200) {
+          const data = JSON.parse(this.responseText);
+          let lastDayData;
+          let index = 0;
+          let sumOfTotalVaccinations = 0;
+          for (let i in data) {
+            if (lastDayData) {
+              if (index == 119 && lastDayData == data[i]) {
+                // Do nothing
+              } else {
+                newVaccinationData.push({ x: i, y: data[i] - lastDayData });
+                sumOfTotalVaccinations += data[i] - lastDayData;
+                lastDayData = data[i];
+              }
+            } else {
+              lastDayData = data[i];
             }
+            index++;
+          }
 
-            xhr.send();
+          const averageVaccinationsPerDay = Math.round(
+            sumOfTotalVaccinations / (index - 1)
+          );
 
+          // Update the child element of the #data-container-2 {DOM-element}
+          const casesDataContainer =
+            document.querySelector('#data-container-2');
+          casesDataContainer
+            .querySelector('.data-container-info-1')
+            .querySelector('.data-info-data').innerHTML = formatNumber(
+            averageVaccinationsPerDay
+          );
+
+          // Update the chart
+          const chartTitle = document.querySelector('#chart-title');
+          const chartSubTitle = document.querySelector('#chart-subtitle');
+
+          chartTitle.innerHTML = 'Worldwide';
+          chartSubTitle.innerHTML =
+            'New Vaccinations <span>(last 120 days)</span>';
+
+          chart.data.datasets[0].data = newVaccinationData;
+          chart.data.datasets[0].backgroundColor = 'rgba(0, 0, 255, 0.568)';
+          chart.data.datasets[0].borderColor = 'blue';
+          chart.data.datasets[0].label = 'Vaccinations';
+
+          chart.update();
         }
-        else {
-            // Get and display the specific country's vaccine data
+      };
 
-            // First determine whether the selected country is vaccinating
+      xhr.send();
+    } else {
+      // Get and display the specific country's vaccine data
 
-            // countryData format: {country: South Africa, countryCode: ZAF}
-            const countryData = countryCodeData.find(function(country) {
-                if (country.countryCode == location) {
-                    return true;
-                }
-            });
+      // First determine whether the selected country is vaccinating
 
-            const vaccinatingCountry = vaccinatingCountries.find(element => element == countryData.country);
+      // countryData format: {country: South Africa, countryCode: ZAF}
+      const countryData = countryCodeData.find(function (country) {
+        if (country.countryCode == location) {
+          return true;
+        }
+      });
 
-            if (vaccinatingCountry) {
-                // Get and display the vaccinating country's vaccination data
+      const vaccinatingCountry = vaccinatingCountries.find(
+        (element) => element == countryData.country
+      );
 
-                const xhr = new XMLHttpRequest();
-                xhr.open("GET", `https://disease.sh/v3/covid-19/vaccine/coverage/countries/${countryData.countryCode}?lastdays=120&fullData=true`, true);
+      if (vaccinatingCountry) {
+        // Get and display the vaccinating country's vaccination data
 
-                let newVaccinationData = [];
-                xhr.onload = function() {
-                    if (this.status == 200) {
-                        const data = JSON.parse(this.responseText);
-                        // console.log(data.timeline);
-                        
-                        /**
+        const xhr = new XMLHttpRequest();
+        xhr.open(
+          'GET',
+          `https://disease.sh/v3/covid-19/vaccine/coverage/countries/${countryData.countryCode}?lastdays=120&fullData=true`,
+          true
+        );
+
+        let newVaccinationData = [];
+        xhr.onload = function () {
+          if (this.status == 200) {
+            const data = JSON.parse(this.responseText);
+            // console.log(data.timeline);
+
+            /**
 
                          * Ran into charting issues with map() here.
                          * The chart had no fill and was plotting negative values when using the map() method.
@@ -260,181 +277,197 @@ export function updateChart(chart, countryCodeData, vaccinatingCountries) {
                          * when you leave out the first data point, otherwise you will run into the same problem that map() did.
 
                         */
-                        let lastDayData;
-                        let sumOfTotalVaccinations = 0;
-                        let index = 119;
-                        for (let i in data.timeline) {
-                            if (lastDayData) {  
-                                newVaccinationData.push({x: data.timeline[i].date, y: data.timeline[i].daily});
-                                sumOfTotalVaccinations += data.timeline[i].daily;
-                                lastDayData = data.timeline[i].daily;
-                            }
-                            else {
-                                lastDayData = data.timeline[i].daily;
-                            }
-                        };
-
-                        const averageVaccinationsPerDay = Math.round(sumOfTotalVaccinations / (index - 1));
-
-                        // Update the child element of the #data-container-2 {DOM-element}
-                        const casesDataContainer = document.querySelector("#data-container-2");
-                        casesDataContainer.querySelector(".data-container-info-1").querySelector(".data-info-data").innerHTML = formatNumber(averageVaccinationsPerDay);
-
-                        // Update the chart
-                        const chartTitle = document.querySelector("#chart-title");
-                        const chartSubTitle = document.querySelector("#chart-subtitle");
-
-                        chartTitle.innerHTML = countryData.country;
-                        chartSubTitle.innerHTML = "Daily Vaccinations <span>(last 120 days)</span>";
-
-                        chart.data.datasets[0].data = newVaccinationData;
-                        chart.data.datasets[0].backgroundColor = "rgba(0, 0, 255, 0.568)";
-                        chart.data.datasets[0].borderColor = "blue";
-                        chart.data.datasets[0].label = "Vaccinations";
-                        chart.update();
-                        
-                    }
-                }
-
-                xhr.send();
-            }
-            else {
-                // Let the user know that the particular country has not reported any vaccination data
-
+            let lastDayData;
+            let sumOfTotalVaccinations = 0;
+            let index = 119;
+            for (let i in data.timeline) {
+              if (lastDayData) {
+                newVaccinationData.push({
+                  x: data.timeline[i].date,
+                  y: data.timeline[i].daily,
+                });
+                sumOfTotalVaccinations += data.timeline[i].daily;
+                lastDayData = data.timeline[i].daily;
+              } else {
+                lastDayData = data.timeline[i].daily;
+              }
             }
 
+            const averageVaccinationsPerDay = Math.round(
+              sumOfTotalVaccinations / (index - 1)
+            );
 
-        }
+            // Update the child element of the #data-container-2 {DOM-element}
+            const casesDataContainer =
+              document.querySelector('#data-container-2');
+            casesDataContainer
+              .querySelector('.data-container-info-1')
+              .querySelector('.data-info-data').innerHTML = formatNumber(
+              averageVaccinationsPerDay
+            );
 
+            // Update the chart
+            const chartTitle = document.querySelector('#chart-title');
+            const chartSubTitle = document.querySelector('#chart-subtitle');
+
+            chartTitle.innerHTML = countryData.country;
+            chartSubTitle.innerHTML =
+              'Daily Vaccinations <span>(last 120 days)</span>';
+
+            chart.data.datasets[0].data = newVaccinationData;
+            chart.data.datasets[0].backgroundColor = 'rgba(0, 0, 255, 0.568)';
+            chart.data.datasets[0].borderColor = 'blue';
+            chart.data.datasets[0].label = 'Vaccinations';
+            chart.update();
+          }
+        };
+
+        xhr.send();
+      } else {
+        // Let the user know that the particular country has not reported any vaccination data
+      }
     }
-    else if (covidDataType == "Cases") {
-        // Get and display cases data
-        if (location == "worldwide") {
-            // Get and display worldwide cases data
-            
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", "https://disease.sh/v3/covid-19/historical/all?lastdays=120");
-            let data;
-            let newData = [];
-            let labels = [];
-            xhr.onload = function() {
-                if (this.status == 200) {
-                    data = JSON.parse(this.responseText);
+  } else if (covidDataType == 'Cases') {
+    // Get and display cases data
+    if (location == 'worldwide') {
+      // Get and display worldwide cases data
 
-                    let tempData = [];
-                    for (let i in data) {
-                        let lastDayData;
-                        let index;
-                        let indexedData = [];
-                        for (let j in data[i]) {
-                            if (lastDayData) {
-                                if (data[i][j] == 0) {
-                                    indexedData.push({x: j, y: Math.abs(data[i][j])});
-                                }
-                                else {
-                                    indexedData.push({x: j, y: Math.abs(lastDayData - data[i][j])});
-                                    lastDayData = data[i][j];
-                                }
-                            }
-                            else {
-                                lastDayData = data[i][j];
-                            }
-                        }
-                        tempData.push(indexedData);
-                    }
+      const xhr = new XMLHttpRequest();
+      xhr.open(
+        'GET',
+        'https://disease.sh/v3/covid-19/historical/all?lastdays=120'
+      );
+      let data;
+      let newData = [];
+      let labels = [];
+      xhr.onload = function () {
+        if (this.status == 200) {
+          data = JSON.parse(this.responseText);
 
-                    countryTimeSeriesData = {cases: tempData[0], deaths: tempData[1], recovered: tempData[2]};
-                    
-                    const chartTitle = document.querySelector("#chart-title");
-                    const chartSubTitle = document.querySelector("#chart-subtitle");
-
-                    chartTitle.innerHTML = "Worldwide";
-                    chartSubTitle.innerHTML = "Daily Cases <span>(last 120 days)</span>";
-
-                    chart.data.datasets[0].data = countryTimeSeriesData.cases;
-                    chart.data.datasets[0].backgroundColor = "rgba(255, 166, 0, 0.568)";
-                    chart.data.datasets[0].borderColor = "rgb(224, 146, 0)";
-                    chart.data.datasets[0].label = "Cases";
-                    chart.update();
+          let tempData = [];
+          for (let i in data) {
+            let lastDayData;
+            let index;
+            let indexedData = [];
+            for (let j in data[i]) {
+              if (lastDayData) {
+                if (data[i][j] == 0) {
+                  indexedData.push({ x: j, y: Math.abs(data[i][j]) });
+                } else {
+                  indexedData.push({
+                    x: j,
+                    y: Math.abs(lastDayData - data[i][j]),
+                  });
+                  lastDayData = data[i][j];
                 }
+              } else {
+                lastDayData = data[i][j];
+              }
             }
+            tempData.push(indexedData);
+          }
 
-            xhr.send();
+          countryTimeSeriesData = {
+            cases: tempData[0],
+            deaths: tempData[1],
+            recovered: tempData[2],
+          };
+
+          const chartTitle = document.querySelector('#chart-title');
+          const chartSubTitle = document.querySelector('#chart-subtitle');
+
+          chartTitle.innerHTML = 'Worldwide';
+          chartSubTitle.innerHTML = 'Daily Cases <span>(last 120 days)</span>';
+
+          chart.data.datasets[0].data = countryTimeSeriesData.cases;
+          chart.data.datasets[0].backgroundColor = 'rgba(255, 166, 0, 0.568)';
+          chart.data.datasets[0].borderColor = 'rgb(224, 146, 0)';
+          chart.data.datasets[0].label = 'Cases';
+          chart.update();
         }
-        else {
-            // Get and display the specific country's cases data
+      };
 
-            // First get the name of the country selected using its iso code
-            // countryData format: {country: South Africa, countryCode: ZAF}
-            const countryData = countryCodeData.find(function(country) {
-                if (country.countryCode == location) {
-                    return true;
+      xhr.send();
+    } else {
+      // Get and display the specific country's cases data
+
+      // First get the name of the country selected using its iso code
+      // countryData format: {country: South Africa, countryCode: ZAF}
+      const countryData = countryCodeData.find(function (country) {
+        if (country.countryCode == location) {
+          return true;
+        }
+      });
+
+      const xhr = new XMLHttpRequest();
+      xhr.open(
+        'GET',
+        `https://disease.sh/v3/covid-19/historical/${location}?lastdays=120`,
+        true
+      );
+
+      xhr.onload = function () {
+        if (this.status == 200) {
+          const data = JSON.parse(this.responseText);
+
+          let tempData = [];
+          for (let i in data.timeline) {
+            let lastDayData;
+            let index;
+            let indexedData = [];
+            for (let j in data.timeline[i]) {
+              if (lastDayData) {
+                if (data.timeline[i][j] == 0) {
+                  indexedData.push({ x: j, y: Math.abs(data.timeline[i][j]) });
+                } else {
+                  indexedData.push({
+                    x: j,
+                    y: Math.abs(lastDayData - data.timeline[i][j]),
+                  });
+                  lastDayData = data.timeline[i][j];
                 }
-            });
-
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", `https://disease.sh/v3/covid-19/historical/${location}?lastdays=120`, true);
-
-            xhr.onload = function() {
-                if (this.status == 200) {
-                    const data = JSON.parse(this.responseText);
-                    
-                    let tempData = [];
-                    for (let i in data.timeline) {
-                        let lastDayData;
-                        let index;
-                        let indexedData = [];
-                        for (let j in data.timeline[i]) {
-                            if (lastDayData) {
-                                if (data.timeline[i][j] == 0) {
-                                    indexedData.push({x: j, y: Math.abs(data.timeline[i][j])});
-                                }
-                                else {
-                                    indexedData.push({x: j, y: Math.abs(lastDayData - data.timeline[i][j])});
-                                    lastDayData = data.timeline[i][j];
-                                }
-                            }
-                            else {
-                                lastDayData = data.timeline[i][j];
-                            }
-                        }
-                        tempData.push(indexedData);
-                    }
-
-                    countryTimeSeriesData = {cases: tempData[0], deaths: tempData[1], recovered: tempData[2]};
-
-                    const chartTitle = document.querySelector("#chart-title");
-                    const chartSubTitle = document.querySelector("#chart-subtitle");
-
-                    chartTitle.innerHTML = countryData.country;
-                    chartSubTitle.innerHTML = "New Cases <span>(last 120 days)</span>";
-
-                    chart.data.datasets[0].data = countryTimeSeriesData.cases;
-                    chart.data.datasets[0].backgroundColor = "rgba(255, 166, 0, 0.568)";
-                    chart.data.datasets[0].borderColor = "rgb(224, 146, 0)";
-                    chart.data.datasets[0].label = "Cases";
-                    chart.update();
-                }
-                else if (this.status == 404) {
-                    const data = JSON.parse(this.responseText);
-                    alert(data.message+". We therefore cannot plot any historical data for this country.");
-                }
+              } else {
+                lastDayData = data.timeline[i][j];
+              }
             }
+            tempData.push(indexedData);
+          }
 
-            xhr.send();
-            
+          countryTimeSeriesData = {
+            cases: tempData[0],
+            deaths: tempData[1],
+            recovered: tempData[2],
+          };
+
+          const chartTitle = document.querySelector('#chart-title');
+          const chartSubTitle = document.querySelector('#chart-subtitle');
+
+          chartTitle.innerHTML = countryData.country;
+          chartSubTitle.innerHTML = 'New Cases <span>(last 120 days)</span>';
+
+          chart.data.datasets[0].data = countryTimeSeriesData.cases;
+          chart.data.datasets[0].backgroundColor = 'rgba(255, 166, 0, 0.568)';
+          chart.data.datasets[0].borderColor = 'rgb(224, 146, 0)';
+          chart.data.datasets[0].label = 'Cases';
+          chart.update();
+        } else if (this.status == 404) {
+          const data = JSON.parse(this.responseText);
+          alert(
+            data.message +
+              '. We therefore cannot plot any historical data for this country.'
+          );
         }
+      };
+
+      xhr.send();
     }
+  }
 }
-
-
-
 
 // Switch chart data function
 
 export function switchChartData(dataToDisplay, chart, countryTimeSeriesData) {
-
-    /**About
+  /**About
 
      * @function switchChartData
 
@@ -456,37 +489,35 @@ export function switchChartData(dataToDisplay, chart, countryTimeSeriesData) {
 
     */
 
-    if (dataToDisplay == "Cases") {
-        const chartSubTitle = document.querySelector("#chart-subtitle");
+  if (dataToDisplay == 'Cases') {
+    const chartSubTitle = document.querySelector('#chart-subtitle');
 
-        chartSubTitle.innerHTML = "New Cases <span>(last 120 days)</span>";
+    chartSubTitle.innerHTML = 'New Cases <span>(last 120 days)</span>';
 
-        chart.data.datasets[0].data = countryTimeSeriesData.cases;
-        chart.data.datasets[0].backgroundColor = "rgba(255, 166, 0, 0.568)";
-        chart.data.datasets[0].borderColor = "rgb(224, 146, 0)";
-        chart.data.datasets[0].label = "Cases";
-        chart.update();
-    }
-    else if (dataToDisplay == "Recoveries") {
-        const chartSubTitle = document.querySelector("#chart-subtitle");
+    chart.data.datasets[0].data = countryTimeSeriesData.cases;
+    chart.data.datasets[0].backgroundColor = 'rgba(255, 166, 0, 0.568)';
+    chart.data.datasets[0].borderColor = 'rgb(224, 146, 0)';
+    chart.data.datasets[0].label = 'Cases';
+    chart.update();
+  } else if (dataToDisplay == 'Recoveries') {
+    const chartSubTitle = document.querySelector('#chart-subtitle');
 
-        chartSubTitle.innerHTML = "Daily Recoveries <span>(last 120 days)</span>";
+    chartSubTitle.innerHTML = 'Daily Recoveries <span>(last 120 days)</span>';
 
-        chart.data.datasets[0].data = countryTimeSeriesData.recovered;
-        chart.data.datasets[0].backgroundColor = "rgba(0, 128, 0, 0.555)";
-        chart.data.datasets[0].borderColor = "green";
-        chart.data.datasets[0].label = "Recoveries";
-        chart.update();
-    }
-    else if (dataToDisplay == "Deaths") {
-        const chartSubTitle = document.querySelector("#chart-subtitle");
+    chart.data.datasets[0].data = countryTimeSeriesData.recovered;
+    chart.data.datasets[0].backgroundColor = 'rgba(0, 128, 0, 0.555)';
+    chart.data.datasets[0].borderColor = 'green';
+    chart.data.datasets[0].label = 'Recoveries';
+    chart.update();
+  } else if (dataToDisplay == 'Deaths') {
+    const chartSubTitle = document.querySelector('#chart-subtitle');
 
-        chartSubTitle.innerHTML = "Daily Deaths <span>(last 120 days)</span>";
+    chartSubTitle.innerHTML = 'Daily Deaths <span>(last 120 days)</span>';
 
-        chart.data.datasets[0].data = countryTimeSeriesData.deaths;
-        chart.data.datasets[0].backgroundColor = "rgba(255, 0, 0, 0.568)";
-        chart.data.datasets[0].borderColor = "red";
-        chart.data.datasets[0].label = "Deaths";
-        chart.update();
-    }
+    chart.data.datasets[0].data = countryTimeSeriesData.deaths;
+    chart.data.datasets[0].backgroundColor = 'rgba(255, 0, 0, 0.568)';
+    chart.data.datasets[0].borderColor = 'red';
+    chart.data.datasets[0].label = 'Deaths';
+    chart.update();
+  }
 }
