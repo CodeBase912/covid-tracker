@@ -1,0 +1,23 @@
+{
+  "name": "covid-tracker",
+  "version": "1.0.0",
+  "description": "A COVID-19 statistics dashboard for cases and vaccination data",
+  "main": "./js/app.js",
+  "dependencies": {
+    "chart.js": "^3.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeBase912/covid-tracker.git"
+  },
+  "author": "Tshepo Tsilo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CodeBase912/covid-tracker/issues"
+  },
+  "homepage": "https://github.com/CodeBase912/covid-tracker#readme"
+}
