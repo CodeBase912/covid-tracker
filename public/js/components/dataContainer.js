@@ -284,8 +284,6 @@ export function updateCovidDataContainer(
           }
         });
 
-        console.log(countryData);
-
         const countryVaccinationData = dataContainerVaccinationData.find(
           function (country) {
             if (country.country == countryData.country) {
@@ -293,8 +291,6 @@ export function updateCovidDataContainer(
             }
           }
         );
-
-        console.log(countryVaccinationData);
 
         const todaysVaccinations = countryVaccinationData.timeline[0].daily;
         const totalVaccinations = countryVaccinationData.timeline[0].total;
